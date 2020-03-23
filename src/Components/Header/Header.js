@@ -8,8 +8,8 @@ class Header extends React.Component {
                 <nav>
                     <h1>Contact list app</h1>
                     <ul className='d-flex'>
-                            <li><Link to='/'>Home</Link></li>
-                            <li><Link to='contact'>Add contact</Link></li>
+                        <li><Link to='/'>Home</Link></li>
+                        <li><Link to='contact'>Add contact</Link></li>
                     </ul>
                 </nav>
             </header>
