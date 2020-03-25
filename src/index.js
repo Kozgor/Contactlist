@@ -4,9 +4,11 @@ import "./index.css";
 import uuid from "uuid";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Components
-import ContactList from "./Components/ContactList/ContactList";
-import AddContact from './Components/ContactList/AddContact/AddContact';
+import ContactList from './Components/ContactList/ContactList';
+import AddContact from './Components/AddContact/AddContact';
 import Header from './Components/Header/Header';
+import Edit from './Components/EditContact/EditContact';
+import PageNotFound from './Components/Page404/PageNotFound';
 
 class App extends React.Component {
   currendID = 1000;
@@ -21,9 +23,9 @@ class App extends React.Component {
         avatar: 88,
         gender: 'men',
         star: false
-    },
-    {
-        id:uuid(),
+      },
+      {
+        id: uuid(),
         name: "John Snow",
         address: "Castle Black",
         phone: "(096)-711-5602",
@@ -31,9 +33,9 @@ class App extends React.Component {
         avatar: 70,
         gender: 'men',
         star: false
-    },
-    {
-        id:uuid(),
+      },
+      {
+        id: uuid(),
         name: "John Wick",
         address: "1st WallStreet Court, Continental, room number 44",
         phone: "(099)-000-0099",
@@ -41,9 +43,9 @@ class App extends React.Component {
         avatar: 55,
         gender: 'men',
         star: false
-    },
-    {
-        id:uuid(),
+      },
+      {
+        id: uuid(),
         name: "Cleopatra",
         address: "Cairo",
         phone: "none",
@@ -51,8 +53,8 @@ class App extends React.Component {
         avatar: 1,
         gender: 'women',
         star: false
-    },
-    {
+      },
+      {
         id: uuid(),
         name: "Spider Man",
         address: "Forest Hills 20, NY",
@@ -61,8 +63,9 @@ class App extends React.Component {
         avatar: 65,
         gender: 'men',
         star: false
-    }
-    ]
+      }
+    ],
+    currentContact: ""
   };
 
   onStarChange = id => {
@@ -76,16 +79,16 @@ class App extends React.Component {
     });
   };
 
-  onAddContact = (name, address, telnumber, email,avatar) => {
+  onAddContact = (name, address, telnumber, email, avatar) => {
     let newContact = {
-        id : uuid(),
-        name: name,
-        address: address,
-        avatar: avatar,
-        phone: telnumber,
-        gender: "men",
-        email: email,
-        star: false
+      id: uuid(),
+      name: name,
+      address: address,
+      avatar: avatar,
+      phone: telnumber,
+      gender: "men",
+      email: email,
+      star: false
     };
     const newList = [...this.state.List, newContact];
     this.setState({
@@ -97,15 +100,41 @@ class App extends React.Component {
       }
     });*/
   };
-  onDeleteContact = id =>{
+  onDeleteContact = id => {
     const index = this.state.List.findIndex(elem => elem.id === id);
     const partOne = this.state.List.slice(0, index);
-    const partTwo = this.state.List.slice(index +1);
+    const partTwo = this.state.List.slice(index + 1);
     const newArrey = [...partOne, ...partTwo]
-    this.setState(() =>{
-      return{List: newArrey}
+    this.setState(() => {
+      return { List: newArrey }
     })
   }
+  onEditContact = id => {
+    const index = this.state.List.findIndex(elem => elem.id === id);
+    const currentContact = this.state.List[index];
+    this.setState({
+      currentContact: currentContact
+    });
+  };
+  onEditCurrentContact = (id, name, address, phone, email, avatar) => {
+    const index = this.state.List.findIndex(elem => elem.id === id);
+    let editedContact = {
+      id: id,
+      name: name,
+      address: address,
+      avatar: avatar,
+      phone: phone,
+      gender: "women",
+      email: email,
+      star: false
+    };
+    const partOne = this.state.List.slice(0, index);
+    const partTwo = this.state.List.slice(index + 1);
+    const newList = [...partOne, editedContact, ...partTwo];
+    this.setState({
+      List: newList
+    });
+  };
   render() {
     return (
       <div className="maindiv">
@@ -115,21 +144,37 @@ class App extends React.Component {
             className="panel-collapse collapse show"
             aria-expanded="true"
           >
-          <Router>
-          <Header />
-            <Switch>
-              <Route path="/"
-              exact 
-              render={()=>(
-              <ContactList List={this.state.List} onStarChange={this.onStarChange} onDeleteContact={this.onDeleteContact} />)}/>
+            <Router>
+              <Header />
+              <Switch>
+                <Route path="/"
+                  exact
+                  render={() => (
+                    <ContactList List={this.state.List} onEditContact={this.onEditContact} onStarChange={this.onStarChange} onDeleteContact={this.onDeleteContact} />)} />
 
-              <Route path="/contact"
-              exact
-              render={()=>(
-              <AddContact onAddContact={this.onAddContact} />)} />
-            </Switch>
-          </Router>
-            
+                <Route path="/contact"
+                  exact
+                  render={() => (
+                    <AddContact 
+                      onAddContact={this.onAddContact} 
+                    />)} />
+                <Route path='/edit' 
+                  exact 
+                  render={() => (
+                    <Edit 
+                      currentContact={this.state.currentContact}
+                      onEditCurrentContact={this.onEditCurrentContact}
+                      />
+                    )} 
+                  />
+                  <Route path="*"
+                  exact
+                  render={() => (
+                    <PageNotFound/>)}/>
+              </Switch>
+
+            </Router>
+
             {/*
             <ContactList
               List = {this.state.List}

@@ -1,14 +1,18 @@
 import React from "react";
-import "./AddContact.css";
+import "./EditContact.css";
+import { Redirect } from "react-router-dom";
 
-class AddContact extends React.Component {
+
+class Edit extends React.Component {
     state = {
-        name: null,
-        address: null,
-        gender: "men",
-        telNumber: null,
-        email: null,
-        avatar: null
+        id: this.props.currentContact.id,
+        name: this.props.currentContact.name,
+        address: this.props.currentContact.address,
+        gender: this.props.currentContact.gender,
+        phone: this.props.currentContact.phone,
+        email: this.props.currentContact.email,
+        avatar: this.props.currentContact.avatar,
+        isRedirect: this.props.currentContact.isRedirect
     };
 
     getName = event => {
@@ -18,7 +22,7 @@ class AddContact extends React.Component {
     };
     getTelNumber = event => {
         this.setState({
-            telNumber: event.target.value
+            phone: event.target.value
         });
     };
     getAddress = event => {
@@ -37,42 +41,44 @@ class AddContact extends React.Component {
             avatar: event.target.value
         });
     };
+
     onSendData = event => {
         event.preventDefault();
-        const { name, address, telNumber, email, avatar } = this.state
-        this.props.onAddContact(
-            name,
-            address,
-            telNumber,
-            email,
-            avatar
-        );
-    };
+        const { id, name, address, phone, email, avatar } = this.state;
+        this.props.onEditCurrentContact(id, name, address, phone, email, avatar);
+        this.setState({
+          isRedirect: true
+        });
+      };
     render() {
+        const { name, address, phone, email, avatar } = this.state;
+        if (this.state.isRedirect) {
+            return <Redirect to="/" />;
+          }
         return (
-            <div className="container">
+            <div className="container-form">
                 <form onSubmit={this.onSendData}>
                     <input
                         type="text"
-                        placeholder="Name"
+                        placeholder={name}
                         className="form-control"
                         onChange={this.getName}
                     />
                     <input
                         type="text"
-                        placeholder="Address"
+                        placeholder={address}
                         className="form-control"
                         onChange={this.getAddress}
                     />
                     <input
                         type="text"
-                        placeholder="Email"
+                        placeholder={email}
                         className="form-control"
                         onChange={this.getEmail}
                     />
                     <input
                         type="text"
-                        placeholder="Tel number"
+                        placeholder={phone}
                         className="form-control"
                         onChange={this.getTelNumber}
                     />
@@ -80,33 +86,17 @@ class AddContact extends React.Component {
                         type="number"
                         min="1"
                         max="99"
-                        placeholder="avatar"
+                        placeholder={avatar}
                         className="form-control"
                         onChange={this.getAvatar}
                     />
-                    <span>
-                    <input className="radiobtn"
-                        type="radio"
-                        name="gender"
-                        className="form-check-input"
-                        value="man"
-                        id="gender_man"
-                    />
-                    <label htmlFor="gender_man" className="form-check-label">Man</label>
-                    <input className="radiobtn"
-                        type="radio"
-                        name="gender"
-                        className="form-check-input"
-                        value="woman"
-                        id="gender_woman"
-                    />
-                    <label htmlFor="gender_woman" className="form-check-label">Woman</label>
-                    </span>
-                    <button className="btn btn-success" type="submit">Add new contact</button>
-                </form>
-            </div>
+                    <button className="btn btn-success editbtn" type="submit">
+                        Save chages
+                    </button>
+          </form>
+        </div>
         );
     }
 }
 
-export default AddContact;
+export default Edit;

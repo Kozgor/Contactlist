@@ -10,3 +10,7 @@
   width: 25%;
   margin: 10px auto;
 }
+.fa-edit, .fa-edit:hover {
+  margin-top: 2px;
+  color: #28a745;
+}

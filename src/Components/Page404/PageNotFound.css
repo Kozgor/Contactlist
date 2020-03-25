@@ -1,0 +1,19 @@
+.div-404 {
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+}
+h2{
+    color: white;
+    text-align: center;
+}
+img {
+    display: block;
+    margin: 20px;
+    float: left;
+}
+.page-404-span {
+    color: yellow;
+    background-color: tomato;
+    border-radius: 5px;
+}

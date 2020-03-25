@@ -1,0 +1,28 @@
+.add-form{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 40%;
+    border: solid 2px #28a745;
+    padding: 15px;
+}
+.add-form input{
+    margin-top: 5px;
+    width: 100%;
+}
+.form-check-input {
+    margin-left: 3px;
+    margin-top: 7px;
+}
+.form-check-label{
+    margin-left: 20px;
+}
+.addbutton{
+    margin-top: 10px;
+}
+.container{
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+}
